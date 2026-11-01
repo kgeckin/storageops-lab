@@ -12,6 +12,7 @@ import os
 import re
 import secrets
 import sqlite3
+from contextlib import closing
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from threading import Lock
@@ -149,7 +150,8 @@ def ingest(sample: HostSample, authorization: str | None = Header(default=None))
         raise HTTPException(status_code=403, detail="Token is assigned to another host")
     moment = datetime.now(timezone.utc).isoformat()
     with _DB_LOCK:
-        with _connect() as conn:
+        with closing(_connect()) as conn:
+          with conn:
             conn.execute(
                 """INSERT INTO host_samples (
                   host_id, received_at, os_family, cpu_percent, cpu_count,
@@ -169,7 +171,7 @@ def ingest(sample: HostSample, authorization: str | None = Header(default=None))
 
 
 def _host_rows(limit: int = 60, host_id: str | None = None) -> list[sqlite3.Row]:
-    with _connect() as conn:
+    with closing(_connect()) as conn:
         if host_id is None:
             rows = conn.execute(
                 """SELECT s.* FROM host_samples s
