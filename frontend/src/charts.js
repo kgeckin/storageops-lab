@@ -9,6 +9,7 @@ export const palette = {
   gold: '#E5C78F', cyan: '#64B8FF', teal: '#54D3BD',
   violet: '#B9A3FC', amber: '#F3BB66', red: '#FA8787',
 };
+const format = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
 const isNumber = value => Number.isFinite(Number(value));
 export const short = value => isNumber(value) ? format.format(value) : '—';
 export const pct = value => isNumber(value) ? short(value) + '%' : '—';
@@ -16,7 +17,7 @@ export const gb = value => short(value / 1_000_000_000) + ' GB';
 export const timestamp = value => value ? new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—';
 
 
-function baseAxes(colors) {
+export function baseAxes(colors) {
   return {
     axisLabel: { color: colors.secondary, fontSize: 11 },
     axisLine: { show: false },
@@ -73,7 +74,7 @@ export function compareOption(arrays, metric, theme) {
       label: { show: true, position: 'right', color: c.secondary, formatter: x => metric === 'iops' ? short(x.value) : pct(x.value) } }]
   };
 }
-function useColorsDummy(theme) {
+export function useColorsDummy(theme) {
   return theme === 'dark' ? { secondary: '#ABC0CE', line: '#344552' } : { secondary: '#54687B', line: '#D6E0E8' };
 }
 
