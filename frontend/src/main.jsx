@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { palette, short, pct, gb, timestamp, areaOption, capacityOption, compareOption, heatmapOption, severityOption, useColorsDummy, baseAxes } from './charts.js';
 import { Glyph, Chart, Sparkline, Panel, Topology, CSVButton } from './components.jsx';
+import ErrorBoundary from './ErrorBoundary.jsx';
 import './styles.css';
 
 const API = import.meta.env.VITE_STORAGEOPS_API || '';
@@ -241,4 +242,4 @@ function App() {
   </div>;
 }
 
-createRoot(document.getElementById('root')).render(<React.StrictMode><App/></React.StrictMode>);
+createRoot(document.getElementById('root')).render(<React.StrictMode><ErrorBoundary><App/></ErrorBoundary></React.StrictMode>);
