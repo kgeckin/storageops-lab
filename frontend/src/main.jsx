@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { palette, short, pct, gb, timestamp, areaOption, capacityOption, compareOption, heatmapOption, severityOption } from './charts.js';
+import { palette, short, pct, gb, timestamp, areaOption, capacityOption, compareOption, heatmapOption, severityOption, useColorsDummy, baseAxes } from './charts.js';
 import { Glyph, Chart, Sparkline, Panel, Topology, CSVButton } from './components.jsx';
 import './styles.css';
 
