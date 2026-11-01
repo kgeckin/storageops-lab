@@ -74,3 +74,7 @@ No SSH agent installation, network scanning, privilege escalation, command execu
 * Generic plugins for documented vendor monitoring APIs, after permission review.
 
 This future design is **not implemented or demonstrated** in v2.
+
+## Frontend module boundaries
+
+The React entry module `frontend/src/main.jsx` manages app state and page navigation. `frontend/src/charts.js` contains the ECharts option builders and semantic chart palette. `frontend/src/components.jsx` holds reusable accessible panels, icons, chart wrappers, topology and export controls. `frontend/src/styles.css` contains the responsive design tokens and layouts.
