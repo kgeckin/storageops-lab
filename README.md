@@ -143,7 +143,9 @@ storageops-lab/
 │   ├── tests/
 │   └── Dockerfile
 ├── frontend/
-│   ├── src/main.jsx            # React + ECharts workbench
+│   ├── src/main.jsx            # React application state and five views
+│   ├── src/charts.js           # Reusable ECharts option generators
+│   ├── src/components.jsx      # Shared dashboard controls and panels
 │   ├── src/styles.css          # Dark and light themes
 │   ├── nginx.conf              # Same-origin API proxy
 │   ├── vite.config.js          # Development API proxy
