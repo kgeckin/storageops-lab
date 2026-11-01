@@ -157,6 +157,24 @@ function heatmapOption(arrays, histories, theme) {
   };
 }
 
+
+function severityOption(alerts, theme) {
+  const warning = alerts.filter(a => a.severity === 'warning').length;
+  const critical = alerts.filter(a => a.severity === 'critical').length;
+  const colors = theme === 'dark' ? [palette.amber, palette.red] : ['#965A00', '#AF3440'];
+  return {
+    tooltip: { trigger: 'item', formatter: p => p.name + ': ' + p.value },
+    legend: { bottom: 0, textStyle: { color: useColorsDummy(theme).secondary } },
+    series: [{ type: 'pie', radius: ['55%', '77%'], center: ['50%', '46%'],
+      label: { show: true, formatter: '{b}: {c}', color: useColorsDummy(theme).secondary },
+      labelLine: { length: 9 }, itemStyle: { borderRadius: 5 },
+      data: [
+        { name: 'Warning', value: warning, itemStyle: { color: colors[0] } },
+        { name: 'Critical', value: critical, itemStyle: { color: colors[1] } }
+      ] }]
+  };
+}
+
 function Sparkline({ points = [], field = 'iops', color = palette.cyan }) {
   const nums = points.slice(-16).map(p => field === 'iops' ? p.performance.iops : p.performance.latency_ms);
   if (nums.length < 2) return <span className="spark-placeholder">● ● ●</span>;
@@ -364,6 +382,21 @@ function App() {
             <Panel eyebrow="INFRASTRUCTURE" title="Logical topology" action={<span className="tag neutral">ILLUSTRATIVE</span>}><Topology arrays={arrays} hosts={hosts}/></Panel>
             <Panel eyebrow="CAPACITY BY ARRAY" title="Allocation comparison" action={<select aria-label="Compare arrays" value={comparison} onChange={e => setComparison(e.target.value)}><option value="capacity">Capacity %</option><option value="iops">IOPS</option></select>}>
               <Chart theme={theme} option={compareOption(arrays, comparison, theme)} label="Comparative simulated storage utilization" height={247}/>
+            </Panel>
+          </div>
+          <div className="two-col">
+            <Panel eyebrow="PERFORMANCE RANKING" title="Highest I/O workloads" action={<span className="tag neutral">CURRENT SAMPLE</span>}>
+              <div className="leader-list">
+                {[...arrays].sort((a, b) => b.performance.iops - a.performance.iops).map((array, index) => <div className="leader-row" key={array.id}>
+                  <span className="leader-rank">0{index + 1}</span>
+                  <div className="leader-main"><div><b>{array.name}</b><strong>{short(array.performance.iops)} IOPS</strong></div>
+                    <div className="leader-track"><span style={{ width: pct(array.performance.iops / Math.max(1, ...arrays.map(a => a.performance.iops)) * 100) }}/></div>
+                  </div>
+                </div>)}
+              </div>
+            </Panel>
+            <Panel eyebrow="ALERT DISTRIBUTION" title="Severity breakdown" action={<span className="tag neutral">SIMULATED</span>}>
+              {alerts.length ? <Chart theme={theme} option={severityOption(alerts, theme)} label="Current warning and critical alert distribution" height={250}/> : <div className="empty-state"><Glyph name="shield" size={30}/><b>All clear in this sample</b><p>No synthetic threshold violations are active.</p></div>}
             </Panel>
           </div>
         </>}
