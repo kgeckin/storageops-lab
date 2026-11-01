@@ -150,8 +150,7 @@ def ingest(sample: HostSample, authorization: str | None = Header(default=None))
         raise HTTPException(status_code=403, detail="Token is assigned to another host")
     moment = datetime.now(timezone.utc).isoformat()
     with _DB_LOCK:
-        with closing(_connect()) as conn:
-          with conn:
+        with closing(_connect()) as conn, conn:
             conn.execute(
                 """INSERT INTO host_samples (
                   host_id, received_at, os_family, cpu_percent, cpu_count,
