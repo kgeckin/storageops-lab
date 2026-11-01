@@ -74,7 +74,7 @@ Change the token placeholder to your generated value:
 STORAGEOPS_AGENTS_JSON={"my-windows":"YOUR_UNIQUE_RANDOM_TOKEN"}
 ```
 
-Save and close. Your `.env` is ignored by Git. Restart the API to load its token registrations:
+Save and close. Your `.env` is ignored by Git. Restrict access with `chmod 600 .env`. Restart the API to load its token registrations:
 
 ```bash
 docker compose up --build -d
@@ -104,7 +104,9 @@ In the same Windows PowerShell window:
 
 ```powershell
 $env:STORAGEOPS_AGENT_ID = "my-windows"
-$env:STORAGEOPS_AGENT_TOKEN = "YOUR_UNIQUE_RANDOM_TOKEN"
+$secret = Read-Host "Paste your agent token" -AsSecureString
+$env:STORAGEOPS_AGENT_TOKEN = [System.Net.NetworkCredential]::new("", $secret).Password
+Remove-Variable secret
 $env:STORAGEOPS_API_URL = "http://127.0.0.1:8000"
 
 .\.venv\Scripts\python.exe host_agent.py --dry-run
