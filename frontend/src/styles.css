@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
 :root {
   color-scheme:dark; font-family:'DM Sans',Inter,'Segoe UI',system-ui,sans-serif;
   --bg:#0B121B;--side:#101923;--panel:#141F2B;--panel-alt:#182634;--raised:#1D2B39;
