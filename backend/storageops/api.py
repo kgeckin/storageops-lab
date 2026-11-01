@@ -5,12 +5,15 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 from .simulator import ARRAYS, alerts, get_array, history, overview, snapshot
+from .hosts import router as host_router
 
 app = FastAPI(
     title="StorageOps Lab",
     description="Synthetic storage telemetry for architecture and observability experiments.",
     version="0.1.0",
 )
+app.include_router(host_router)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
