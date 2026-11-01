@@ -31,7 +31,8 @@ export function Chart({ option, theme, height = 260, label = 'Data visualization
   useEffect(() => {
     if (!node.current) return undefined;
     const plot = echarts.init(node.current, undefined, { renderer: 'canvas' });
-    plot.setOption({ ...option, aria: { enabled: true }, animationDuration: 700 });
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    plot.setOption({ ...option, aria: { enabled: true }, animation: !reducedMotion, animationDuration: reducedMotion ? 0 : 700 });
     const resize = new ResizeObserver(() => plot.resize());
     resize.observe(node.current);
     return () => { resize.disconnect(); plot.dispose(); };
