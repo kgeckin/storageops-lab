@@ -109,7 +109,7 @@ function App() {
       tooltip: { trigger: 'axis', valueFormatter: value => pct(value) },
       xAxis: { type: 'category', boundaryGap: false, data: hostHistory.map(p => timestamp(p.received_at)), ...baseAxes(colors), splitLine: { show: false } },
       yAxis: { type: 'value', min: 0, max: 100, ...baseAxes(colors) },
-      series: [{ type: 'line', name: title, data: hostHistory.map(p => field === 'cpu' ? p.cpu_percent : p[field].percent), smooth: true, showSymbol: false,
+      series: [{ type: 'line', name: title, data: hostHistory.map(p => field === 'cpu' ? p.cpu_percent : p[field].percent), smooth: true, showSymbol: hostHistory.length === 1, symbolSize: 8,
         lineStyle: { color, width: 3 }, areaStyle: { opacity: .12, color }, emphasis: { focus: 'series' } }]
     };
   };
