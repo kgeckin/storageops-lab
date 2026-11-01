@@ -1,6 +1,11 @@
 services:
   api:
     build: ./backend
+    environment:
+      STORAGEOPS_DB_PATH: /data/hosts.sqlite3
+      STORAGEOPS_AGENTS_JSON: ${STORAGEOPS_AGENTS_JSON:-null}
+    volumes:
+      - host-metrics:/data
     ports:
       - "127.0.0.1:8000:8000"
     restart: unless-stopped
@@ -13,6 +18,10 @@ services:
     build: ./frontend
     ports:
       - "127.0.0.1:5173:80"
+    restart: unless-stopped
     depends_on:
       api:
         condition: service_healthy
+
+volumes:
+  host-metrics:
