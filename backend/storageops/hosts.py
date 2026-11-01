@@ -53,6 +53,8 @@ def _registration() -> dict[str, str]:
         value = json.loads(raw)
     except json.JSONDecodeError as exc:
         raise RuntimeError("STORAGEOPS_AGENTS_JSON is not valid JSON") from exc
+    if value is None:
+        return {}
     if not isinstance(value, dict):
         raise RuntimeError("STORAGEOPS_AGENTS_JSON must be an object")
     if any(
