@@ -134,7 +134,7 @@ function compareOption(arrays, metric, theme) {
     backgroundColor: 'transparent', grid: { left: 84, right: 28, top: 17, bottom: 30 },
     tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, valueFormatter: v => short(v) },
     xAxis: { type: 'value', ...baseAxes(c) }, yAxis: { type: 'category', data: arrays.map(a => a.name), ...baseAxes(c), splitLine: { show: false } },
-    series: [{ type: 'bar', barMaxWidth: 24, data: values.map((v, i) => ({ value: v, itemStyle: { color: [palette.cyan, palette.gold, palette.teal][i % 3], borderRadius: [0, 6, 6, 0] } })),
+    series: [{ type: 'bar', barMaxWidth: 24, data: values.map((v, i) => ({ value: v, itemStyle: { color: (theme === 'dark' ? [palette.cyan, palette.gold, palette.teal] : ['#146EAC','#76551D','#007B6E'])[i % 3], borderRadius: [0, 6, 6, 0] } })),
       label: { show: true, position: 'right', color: c.secondary, formatter: x => metric === 'iops' ? short(x.value) : pct(x.value) } }]
   };
 }
@@ -386,7 +386,7 @@ function App() {
                 <div className="host-stat"><span>System disk</span><strong>{pct(selectedHostData.disk.percent)}</strong><small>{gb(selectedHostData.disk.used_bytes)} / {gb(selectedHostData.disk.total_bytes)}</small><div className="host-meter"><i style={{ width: pct(selectedHostData.disk.percent) }}/></div></div>
                 <div className="host-stat"><span>Network counters</span><strong>{short((selectedHostData.network.received_bytes + selectedHostData.network.sent_bytes)/1e9)} GB</strong><small>Lifetime received + sent, not transfer rate</small></div>
               </div>
-              <div className="two-col"><Panel eyebrow="REAL CPU TELEMETRY" title="CPU utilization"><Chart theme={theme} option={hostLine('cpu', 'CPU', palette.cyan)} label="Real CPU readings from enrolled host" height={270}/></Panel><Panel eyebrow="REAL MEMORY TELEMETRY" title="Memory utilization"><Chart theme={theme} option={hostLine('memory', 'Memory', palette.teal)} label="Real memory readings from enrolled host" height={270}/></Panel></div>
+              <div className="two-col"><Panel eyebrow="REAL CPU TELEMETRY" title="CPU utilization"><Chart theme={theme} option={hostLine('cpu', 'CPU', theme === 'dark' ? palette.cyan : '#146EAC')} label="Real CPU readings from enrolled host" height={270}/></Panel><Panel eyebrow="REAL MEMORY TELEMETRY" title="Memory utilization"><Chart theme={theme} option={hostLine('memory', 'Memory', theme === 'dark' ? palette.teal : '#007B6E')} label="Real memory readings from enrolled host" height={270}/></Panel></div>
               <Panel eyebrow="AUTHENTICITY" title="How to verify your device"><div className="verification"><span className="verification-badge"><Glyph name="shield"/> AGENT RECEIPT</span><div><b>Host: {selectedHostData.host_id}</b><p>OS: {selectedHostData.os_family}. Received by API at {selectedHostData.received_at}. Captured using local psutil and token-validated HTTP ingestion.</p></div><p className="disclaimer">The dashboard displays measurements reported by the agent. It cannot independently attest hardware identity or prove the host has not been tampered with.</p></div></Panel>
             </>}
           </>}
