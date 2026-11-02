@@ -90,13 +90,13 @@ Run in **Windows PowerShell**, not Ubuntu:
 ```powershell
 $agentDir = Join-Path $env:USERPROFILE "storageops-agent"
 New-Item -ItemType Directory -Force -Path $agentDir | Out-Null
-Copy-Item "\\wsl.localhost\Ubuntu\home\kgeckin\projects\storageops-lab\agent\*" $agentDir -Recurse -Force
+Copy-Item "\\wsl.localhost\Ubuntu\home\username\projects\storageops-lab\agent\*" $agentDir -Recurse -Force
 Set-Location $agentDir
 py -3 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-If your Ubuntu username or WSL distribution is different, adjust the UNC path. Alternatively copy the `agent/` folder using Windows File Explorer at `\\wsl.localhost\Ubuntu\home\kgeckin\projects\storageops-lab`.
+If your Ubuntu username or WSL distribution is different, adjust the UNC path. Alternatively copy the `agent/` folder using Windows File Explorer at `\\wsl.localhost\Ubuntu\home\username\projects\storageops-lab`.
 
 ### Step 4. Make one real reading
 
